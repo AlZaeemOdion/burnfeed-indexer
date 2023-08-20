@@ -39,9 +39,7 @@ trap "docker compose -f $COMPOSE_CONFIG down -v" EXIT INT KILL ERR
 if [ "$RUN_TESTS" == "true" ]; then
     cd $DIR/.. && BURN_FEED_ADDRESS=0x5FbDB2315678afecb367f032d93F642f64180aa3 \
     RPC_WS_ENDPOINT=ws://localhost:8546 \
-    IPFS_ENDPOINT=$IPFS_ENDPOINT \
-    IPFS_API_KEY=$IPFS_API_KEY \
-    IPFS_API_SECRET=$IPFS_API_SECRET \
+    IPFS_ENDPOINT=http://localhost:8080 \
     TEST_ADDR="0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266" \
     TEST_PRIV_KEY=ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 \
     LOG_LEVEL=debug \
@@ -50,9 +48,7 @@ if [ "$RUN_TESTS" == "true" ]; then
 else
     cd $DIR/.. && go run ./cmd/main.go \
     --rpc.wsEndpoint ws://localhost:8546 \
-    --ipfs.endpoint $IPFS_ENDPOINT \
-    --ipfs.apiKey $IPFS_API_KEY \
-    --ipfs.apiSecret $IPFS_API_SECRET \
+    --ipfs.endpoint http://localhost:8080 \
     --burnFeed.address "0x5FbDB2315678afecb367f032d93F642f64180aa3" \
     --mysql.dsn "burnfeed:burnfeed@tcp(localhost:3306)/burnfeed?charset=utf8mb4&parseTime=True&loc=Local" \
     --verbosity "4"

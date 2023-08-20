@@ -75,7 +75,7 @@ func New(ctx context.Context, cfg *Config) (*ActionsIndexer, error) {
 		ctx:            ctx,
 		db:             db,
 		ethClient:      clientWithTimeout,
-		ipfsClient:     ipfsApi.NewShellWithClient(cfg.IPFSEndpoint, NewClient(cfg.IPFSProjectID, cfg.IPFSProjectSecret)),
+		ipfsClient:     ipfsApi.NewShell(cfg.IPFSEndpoint),
 		burnFeedClient: burnFeedClient,
 		sizeLimit:      cfg.IPFSObjectSizeLimit,
 		head:           head,
