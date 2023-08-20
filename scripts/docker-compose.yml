@@ -1,0 +1,35 @@
+version: "3.9"
+
+services:
+  ethereum_node:
+    image: ghcr.io/foundry-rs/foundry:latest
+    restart: unless-stopped
+    pull_policy: always
+    ports:
+      - 8545:8545
+      - 8546:8545
+    entrypoint:
+      - anvil
+      - --host
+      - "0.0.0.0"
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  mysql:
+    image: mysql:5.6
+    platform: linux/x86_64
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'burnfeed'
+      MYSQL_USER: 'burnfeed'
+      MYSQL_PASSWORD: 'burnfeed'
+      MYSQL_ROOT_PASSWORD: 'burnfeed'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 30s
+      retries: 10

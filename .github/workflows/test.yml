@@ -1,0 +1,71 @@
+name: "CI"
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          repository: alNassrOdion/burnfeed-indexer
+
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.21
+          cache: true
+
+      - name: Lint
+        run: make lint
+
+  integration_tests:
+    name: Unit tests
+    runs-on: ubuntu-latest
+    env:
+      INDEXER_DIR: indexer
+      PROTOCOL_DIR: protocol
+
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.11.0
+        with:
+          access_token: ${{ github.token }}
+
+      - uses: actions/checkout@v3
+        with:
+          repository: alNassrOdion/burnfeed-indexer
+          path: ${{ env.INDEXER_DIR }}
+
+      - uses: actions/checkout@v3
+        with:
+          repository: alNassrOdion/burnfeedprotocol
+          path: ${{ env.PROTOCOL_DIR }}
+          ref: main-1
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.21
+          cache: true
+          cache-dependency-path: ${{ env.INDEXER_DIR }}/go.sum
+
+      - name: Install protocol dependencies
+        working-directory: ${{ env.INDEXER_DIR }}
+        run: forge install
+
+      - name: Build
+        working-directory: ${{ env.CLIENT_DIR }}
+        run: make build
+
+      - name: Test
+        working-directory: ${{ env.INDEXER_DIR }}
+        run: |
+          IPFS_ENDPOINT=https://ipfs.infura.io:5001 IPFS_API_KEY=${{secrets.TEST_IPFS_API_KEY}} IPFS_API_SECRET=${{secrets.TEST_IPFS_API_SECRET}} BURN_FEED_DIR=${GITHUB_WORKSPACE}/${PROTOCOL_DIR} make test
