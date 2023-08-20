@@ -24,6 +24,7 @@ docker compose -f $COMPOSE_CONFIG down -v --remove-orphans &>/dev/null
 docker compose -f $COMPOSE_CONFIG up -d
 
 NODE_URL=localhost:8545 $DIR/wait_for_node.sh
+BURN_FEED_DIR="${BURN_FEED_DIR:-./burnfeed_home}"
 
 # Deploy burnFeed protocol.
 cd $BURN_FEED_DIR &&
