@@ -1,4 +1,5 @@
 # burnfeed-indexer
+[![CI](https://github.com/AlZaeemOdion/burnfeed-indexer/actions/workflows/test.yml/badge.svg)](https://github.com/AlZaeemOdion/burnfeed-indexer/actions/workflows/test.yml)
 
 An indexer implementation for burnFeed protocol
 
