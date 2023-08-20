@@ -27,8 +27,7 @@ NODE_URL=localhost:8545 $DIR/wait_for_node.sh
 
 # Deploy burnFeed protocol.
 cd $BURN_FEED_DIR &&
-  forge install &&
-  forge compile &&
+  forge build &&
   forge create \
     --rpc-url http://localhost:8545 \
     --constructor-args "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266" "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266" \
@@ -42,6 +41,8 @@ if [ "$RUN_TESTS" == "true" ]; then
     IPFS_ENDPOINT=$IPFS_ENDPOINT \
     IPFS_API_KEY=$IPFS_API_KEY \
     IPFS_API_SECRET=$IPFS_API_SECRET \
+    TEST_ADDR="0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266" \
+    TEST_PRIV_KEY=ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 \
     LOG_LEVEL=debug \
     MYSQL_DSN="burnfeed:burnfeed@tcp(localhost:3306)/burnfeed?charset=utf8mb4&parseTime=True&loc=Local" \
         go test -v -p=1 ./... -coverprofile=coverage.out -covermode=atomic -timeout=300s

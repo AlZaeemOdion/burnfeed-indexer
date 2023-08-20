@@ -7,21 +7,17 @@ on:
 
 jobs:
   lint:
-    name: Lint
+    name: lint
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/setup-go@v3
+        with:
+          go-version: 1.21.0
       - uses: actions/checkout@v3
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v3
         with:
-          repository: AlZaeemOdion/burnfeed-indexer
-
-      - name: Set up Go
-        uses: actions/setup-go@v3
-        with:
-          go-version: 1.21
-          cache: true
-
-      - name: Lint
-        run: make lint
+          args: --timeout=10m
 
   integration_tests:
     name: Unit tests
@@ -58,11 +54,11 @@ jobs:
           cache-dependency-path: ${{ env.INDEXER_DIR }}/go.sum
 
       - name: Install protocol dependencies
-        working-directory: ${{ env.INDEXER_DIR }}
-        run: forge install
+        working-directory: ${{ env.PROTOCOL_DIR }}
+        run: git config --global user.name "Odion" && git config --global user.email "AlZaeemOdion@proton.me" && forge install OpenZeppelin/openzeppelin-contracts
 
       - name: Build
-        working-directory: ${{ env.CLIENT_DIR }}
+        working-directory: ${{ env.INDEXER_DIR }}
         run: make build
 
       - name: Test
