@@ -38,12 +38,12 @@ type PubKeyIteratorConfig struct {
 }
 
 // NewPubKeyIterator creates a new instance of PubKey event iterator.
-func NewPubKeyIterator(ctx context.Context, cfg *PubKeyIteratorConfig) (*ActionsIterator, error) {
+func NewPubKeyIterator(ctx context.Context, cfg *PubKeyIteratorConfig) (*PubKeyIterator, error) {
 	if cfg.OnPubKeyEvent == nil {
 		return nil, errors.New("invalid callback")
 	}
 
-	iterator := &ActionsIterator{
+	iterator := &PubKeyIterator{
 		ctx:      ctx,
 		burnFeed: cfg.BurnFeed,
 	}
@@ -87,7 +87,7 @@ func assemblePubKeyIteratorCallback(
 	client *rpc.EthClient,
 	burnFeed *bindings.BurnFeedProtocolClient,
 	callback OnPubKeyEvent,
-	eventIter *ActionsIterator,
+	eventIter *PubKeyIterator,
 ) chainIterator.OnBlocksFunc {
 	return func(
 		ctx context.Context,

@@ -19,4 +19,4 @@ BURN_FEED_DIR=<BURN_FEED_PROTOCOL_DIR> \
 
 ## Tables
 
-See [here](https://github.com/alNassrOdion/burnfeed-indexer/blob/main/scripts/ddl.sql).
+See [here](https://github.com/AlZaeemOdion/burnfeed-indexer/blob/main/scripts/ddl.sql).
