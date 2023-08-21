@@ -57,8 +57,8 @@ func (s *IndexerTestSuite) SetupTest() {
 		BurnFeedAddress:     common.HexToAddress(os.Getenv("BURN_FEED_ADDRESS")),
 		RPCWSEndpoint:       os.Getenv("RPC_WS_ENDPOINT"),
 		IPFSEndpoint:        os.Getenv("IPFS_ENDPOINT"),
-		IPFSProjectID:       os.Getenv("IPFS_API_KEY"),
-		IPFSProjectSecret:   os.Getenv("IPFS_API_SECRET"),
+		IPFSProjectID:       nil,
+		IPFSProjectSecret:   nil,
 		MySqlDsn:            os.Getenv("MYSQL_DSN"),
 		IPFSObjectSizeLimit: 1024000,
 	})

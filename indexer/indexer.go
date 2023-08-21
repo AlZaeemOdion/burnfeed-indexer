@@ -70,12 +70,19 @@ func New(ctx context.Context, cfg *Config) (*ActionsIndexer, error) {
 		return nil, err
 	}
 
+	var IPFSClient *ipfsApi.Shell
+	if cfg.IPFSProjectID != nil && cfg.IPFSProjectSecret != nil {
+		IPFSClient = ipfsApi.NewShellWithClient(cfg.IPFSEndpoint, NewClient(*cfg.IPFSProjectID, *cfg.IPFSProjectSecret))
+	} else {
+		IPFSClient = ipfsApi.NewShell(cfg.IPFSEndpoint)
+	}
+
 	newHeadCh := make(chan *types.Header, 1024)
 	indexer := &ActionsIndexer{
 		ctx:            ctx,
 		db:             db,
 		ethClient:      clientWithTimeout,
-		ipfsClient:     ipfsApi.NewShell(cfg.IPFSEndpoint),
+		ipfsClient:     IPFSClient,
 		burnFeedClient: burnFeedClient,
 		sizeLimit:      cfg.IPFSObjectSizeLimit,
 		head:           head,

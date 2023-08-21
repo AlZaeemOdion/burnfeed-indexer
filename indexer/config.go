@@ -16,8 +16,8 @@ type Config struct {
 	BurnFeedAddress     common.Address
 	RPCWSEndpoint       string
 	IPFSEndpoint        string
-	IPFSProjectID       string
-	IPFSProjectSecret   string
+	IPFSProjectID       *string
+	IPFSProjectSecret   *string
 	MySqlDsn            string
 	IPFSObjectSizeLimit uint64
 }
@@ -35,13 +35,26 @@ func NewConfigFromCliContext(c *cli.Context) (*Config, error) {
 		return nil, fmt.Errorf("invalid websocket endpoint: %s", endpoint)
 	}
 
+	var (
+		IPFSProjectID     *string
+		IPFSProjectSecret *string
+	)
+	if c.IsSet(flags.IPFSProjectID.Name) {
+		projectID := c.String(flags.IPFSProjectID.Name)
+		IPFSProjectID = &projectID
+	}
+	if c.IsSet(flags.IPFSProjectSecret.Name) {
+		secret := c.String(flags.IPFSProjectSecret.Name)
+		IPFSProjectSecret = &secret
+	}
+
 	return &Config{
 		Timeout:             time.Duration(c.Uint64(flags.RPCTimeout.Name)) * time.Second,
 		BurnFeedAddress:     common.HexToAddress(burnFeedAddress),
 		RPCWSEndpoint:       endpoint,
 		IPFSEndpoint:        c.String(flags.IPFSEndpoint.Name),
-		IPFSProjectID:       c.String(flags.IPFSProjectID.Name),
-		IPFSProjectSecret:   c.String(flags.IPFSProjectSecret.Name),
+		IPFSProjectID:       IPFSProjectID,
+		IPFSProjectSecret:   IPFSProjectSecret,
 		MySqlDsn:            c.String(flags.MySqlDsn.Name),
 		IPFSObjectSizeLimit: c.Uint64(flags.IPFSObjectSizeLimit.Name),
 	}, nil
