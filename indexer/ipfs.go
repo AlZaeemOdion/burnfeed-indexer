@@ -31,29 +31,23 @@ func (i *ActionsIndexer) GetActionsByUri(uri string, burn uint64) ([]Action, err
 
 	log.Debug("Get actions by uri", "uri", uri, "burn", burn)
 
-	// TODO: check the file size
 	// Check the aggregated actions list's size at first.
-	// stats, err := i.ipfsClient.List(uri)
-	// if err != nil {
-	// 	return nil, err
-	// }
+	stats, err := i.ipfsClient.ObjectStat(uri)
+	if err != nil {
+		return nil, err
+	}
 
-	// log.Info("File stat", "uri", uri, "stat", stats)
-	// if len(stats) == 0 {
-	// 	return nil, NewInvalidActionEventError(
-	// 		fmt.Errorf("empty file stat, uri: %s", uri),
-	// 	)
-	// }
+	log.Info("File stat", "uri", uri, "stat", stats)
 
-	// if stats[0].Size > i.sizeLimit {
-	// 	return nil, NewInvalidActionEventError(
-	// 		fmt.Errorf(
-	// 			"file size (%d) exceeds the limit (%d)",
-	// 			stats[0].Size,
-	// 			i.sizeLimit,
-	// 		),
-	// 	)
-	// }
+	if uint64(stats.CumulativeSize) > i.sizeLimit {
+		return nil, NewInvalidActionEventError(
+			fmt.Errorf(
+				"file size (%d) exceeds the limit (%d)",
+				stats.CumulativeSize,
+				i.sizeLimit,
+			),
+		)
+	}
 
 	// Parse the JSON array.
 	rawData, err := i.ipfsClient.Cat(uri)
