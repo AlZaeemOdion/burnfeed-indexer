@@ -8,21 +8,16 @@ An indexer implementation for burnFeed protocol
 Start a local development environment, including:
 - a foundry node (port: 8545)
 - a MySQL instance (port: 3306)
+- an IPFS node (port: 5001 / webui: http://localhost:5001/webui)
 - a burnFeed indexer
 
 ```sh
-IPFS_ENDPOINT=<YOUR_IPFS_ENDPOINT> \
-IPFS_API_KEY=<YOUR_IPFS_API_KEY> \
-IPFS_API_SECRET=<YOUR_IPFS_API_SECRET> \
 BURN_FEED_DIR=<BURN_FEED_PROTOCOL_DIR> \
   make dev
 ```
 
 Run tests:
 ```sh
-IPFS_ENDPOINT=<YOUR_IPFS_ENDPOINT> \
-IPFS_API_KEY=<YOUR_IPFS_API_KEY> \
-IPFS_API_SECRET=<YOUR_IPFS_API_SECRET> \
 BURN_FEED_DIR=<BURN_FEED_PROTOCOL_DIR> \
   make test
 ```
