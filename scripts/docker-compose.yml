@@ -16,6 +16,15 @@ services:
       mysql:
         condition: service_healthy
 
+  ipfs:
+    image: ipfs/kubo:latest
+    restart: always
+    ports:
+      - '4001:4001'
+      - '4001:4001/udp'
+      - '8080:8080'
+      - '5001:5001'
+
   mysql:
     image: mysql:5.6
     platform: linux/x86_64

@@ -19,12 +19,12 @@ var (
 	IPFSProjectID = &cli.StringFlag{
 		Name:     "ipfs.apiKey",
 		Usage:    "An IPFS API key",
-		Required: true,
+		Required: false,
 	}
 	IPFSProjectSecret = &cli.StringFlag{
 		Name:     "ipfs.apiSecret",
 		Usage:    "An IPFS API secret",
-		Required: true,
+		Required: false,
 	}
 	BurnFeedAddress = &cli.StringFlag{
 		Name:     "burnFeed.address",
