@@ -45,7 +45,7 @@ var (
 	IPFSObjectSizeLimit = &cli.UintFlag{
 		Name:  "ipfs.sizeLimit",
 		Usage: "Size limit of the ipfs object, if an object exceeds this limit, then it won't be indexed",
-		Value: 1024, // TODO: update this value
+		Value: 10240,
 	}
 	Verbosity = &cli.IntFlag{
 		Name:  "verbosity",
